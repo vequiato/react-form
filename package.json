@@ -1,7 +1,7 @@
 {
-  "name": "react-form",
+  "name": "react-amazing-form",
   "description": "An awesome form for your React application",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "author": "João G. A. Vequiato <hello@vequiato.dev>",
   "license": "MIT",
   "bugs": {
@@ -11,13 +11,13 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/react-form.umd.cjs",
-  "module": "./dist/react-form.js",
+  "main": "./dist/react-amazing-form.umd.cjs",
+  "module": "./dist/react-amazing-form.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/react-form.js",
-      "require": "./dist/react-form.umd.cjs"
+      "import": "./dist/react-amazing-form.js",
+      "require": "./dist/react-amazing-form.umd.cjs"
     }
   },
   "scripts": {
@@ -35,12 +35,10 @@
     "react form"
   ],
   "peerDependencies": {
-    "react": "^16.8.0 || ^17.x",
-    "react-dom:": "^16.8.0 || ^17.x"
+    "react": "^17.0.2"
   },
   "dependencies": {
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react": "^17.0.2"
   },
   "devDependencies": {
     "@types/node": "^18.11.4",

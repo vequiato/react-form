@@ -14,14 +14,13 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, "src/index.ts"),
       name: "MyLib",
-      fileName: "react-form",
+      fileName: "react-amazing-form",
     },
     rollupOptions: {
-      external: ["react", "react-dom"],
+      external: ["react"],
       output: {
         globals: {
           react: "React",
-          "react-dom": "ReactDOM",
         },
       },
     },

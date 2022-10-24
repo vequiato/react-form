@@ -1,3 +1,3 @@
-# react-form
+# react-amazing-form
 
 just a sketch :)
