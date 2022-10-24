@@ -20,14 +20,12 @@ export const Form = ({ children, inputsRef, ...props }: FormProps) => {
       };
     }, {});
 
-    console.log(formValues);
-
     props.onSubmit?.(event);
   };
 
   return (
     <form {...props} onSubmit={submitFormHandler}>
-      {children} <button type="submit">enviar</button>
+      {children}
     </form>
   );
 };

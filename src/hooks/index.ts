@@ -1,3 +1,2 @@
-export * from "./useAsync";
 export * from "./useForm";
-export * from "./usePrevious";
+export * from "./useConfig";

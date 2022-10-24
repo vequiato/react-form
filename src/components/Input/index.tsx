@@ -28,7 +28,7 @@ const validateInput = (
 export const Input = React.forwardRef(
   ({ id, label, validations, ...props }: InnerProps, ref) => {
     const [isValid, setIsValid] = useState(() =>
-      validateInput(String(props.value) || "", validations)
+      validateInput((props.value as string) || "", validations)
     );
 
     const isValidInput = (event: React.FocusEvent<HTMLInputElement>) => {

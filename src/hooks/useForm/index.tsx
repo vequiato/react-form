@@ -1,12 +1,21 @@
 import { useRef, useEffect } from "react";
+import styled from "styled-components";
+import { useAtomValue } from "jotai";
 
-import { ReturnKeyType, FormFields, FormField } from "./types";
 import Form, { FormProps } from "../../components/Form";
 import Input, { InputProps, ReturnedInput } from "../../components/Input";
+import { formConfigAtom, FormConfig } from "../useConfig";
+import { ReturnKeyType, FormFields, FormField } from "./types";
+import { initialConfig } from "./initialConfigs";
 
-export function useForm<T extends FormFields>(fields: T) {
+export function useForm<T extends FormFields>(
+  fields: T,
+  { styles: customStyles }: FormConfig = {}
+) {
   const inputsRef = useRef<HTMLInputElement[]>([]);
   const fieldsKeys = Object.keys(fields);
+  const { styles: configStyles } =
+    useAtomValue(formConfigAtom) || initialConfig;
 
   useEffect(() => {
     inputsRef.current = inputsRef.current.slice(0, fieldsKeys.length);
@@ -39,15 +48,21 @@ export function useForm<T extends FormFields>(fields: T) {
     return acc;
   }, {});
 
+  const StyledForm = styled(Form)`
+    ${configStyles}
+    ${customStyles}
+  `;
+
   return {
     FormFields: formFields as Record<
       Capitalize<ReturnKeyType<keyof T>>,
       ReturnedInput
     >,
     Form: (props: Omit<FormProps, "inputsRef">) => (
-      <Form {...props} inputsRef={inputsRef}>
+      <StyledForm {...props} inputsRef={inputsRef}>
         {props.children}
-      </Form>
+        <button>oi</button>
+      </StyledForm>
     ),
   };
 }

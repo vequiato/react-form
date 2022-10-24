@@ -1,7 +1,7 @@
 {
   "name": "react-amazing-form",
   "description": "An awesome form for your React application",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "author": "João G. A. Vequiato <hello@vequiato.dev>",
   "license": "MIT",
   "bugs": {
@@ -35,15 +35,22 @@
     "react form"
   ],
   "peerDependencies": {
-    "react": "^17.0.2"
+    "react": "^16.8.0 || 17.x",
+    "react-dom": "^16.8.0 || 17.x",
+    "styled-components": "^5.0.0",
+    "jotai": "^1.8.6"
   },
   "dependencies": {
-    "react": "^17.0.2"
+    "jotai": "^1.8.6",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "styled-components": "^5.3.6"
   },
   "devDependencies": {
     "@types/node": "^18.11.4",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
+    "@types/styled-components": "^5.1.26",
     "@vitejs/plugin-react": "^2.1.0",
     "rollup-plugin-typescript2": "^0.34.1",
     "typescript": "^4.6.4",
