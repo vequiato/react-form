@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-export default function usePrevious<T>(value: T) {
+export function usePrevious<T>(value: T) {
   const [mounted, setMounted] = useState(false);
   const ref = useRef<T>();
 
@@ -18,3 +18,5 @@ export default function usePrevious<T>(value: T) {
 
   return ref.current as T;
 }
+
+export default usePrevious;

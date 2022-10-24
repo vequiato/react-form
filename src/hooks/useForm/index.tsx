@@ -4,7 +4,7 @@ import { ReturnKeyType, FormFields, FormField } from "./types";
 import Form, { FormProps } from "../../components/Form";
 import Input, { InputProps, ReturnedInput } from "../../components/Input";
 
-export default function useForm<T extends FormFields>(fields: T) {
+export function useForm<T extends FormFields>(fields: T) {
   const inputsRef = useRef<HTMLInputElement[]>([]);
   const fieldsKeys = Object.keys(fields);
 
@@ -53,3 +53,4 @@ export default function useForm<T extends FormFields>(fields: T) {
 }
 
 export type { ReturnKeyType, FormFields, FormField };
+export default useForm;

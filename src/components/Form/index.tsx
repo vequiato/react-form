@@ -1,6 +1,6 @@
 import { FormProps } from "./types";
 
-const Form = ({ children, inputsRef, ...props }: FormProps) => {
+export const Form = ({ children, inputsRef, ...props }: FormProps) => {
   const submitFormHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 

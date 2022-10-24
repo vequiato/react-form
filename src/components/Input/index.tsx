@@ -25,7 +25,7 @@ const validateInput = (
   return isValid;
 };
 
-const Input = React.forwardRef(
+export const Input = React.forwardRef(
   ({ id, label, validations, ...props }: InnerProps, ref) => {
     const [isValid, setIsValid] = useState(() =>
       validateInput(String(props.value) || "", validations)
