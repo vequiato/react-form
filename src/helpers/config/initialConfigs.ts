@@ -1,6 +1,8 @@
 import { css } from "styled-components";
 
-const styles = css`
+import { FormConfig } from ".";
+
+const styles: FormConfig["styles"] = css`
   display: flex;
   flex-direction: column;
   font-family: "Open Sans", Arial, Helvetica, sans-serif;
@@ -31,4 +33,8 @@ const styles = css`
   }
 `;
 
-export const initialConfig = { styles };
+const options: FormConfig["options"] = {
+  validateOnBlur: false,
+};
+
+export const initialConfig = { styles, options };

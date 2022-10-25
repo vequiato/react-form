@@ -2,13 +2,14 @@ import { FormField } from "../../hooks/useForm/types";
 
 export type InputProps = Omit<
   React.InputHTMLAttributes<HTMLInputElement>,
-  Extract<keyof FormField, "id" | "options" | "type">
+  Extract<keyof FormField, "id" | "options">
 >;
 
 export interface InputComponentProps {
   id: string;
   label?: string;
   validations?: RegExp[] | ((value: string) => boolean)[];
+  validateOnBlur?: boolean;
 }
 
 export type ReturnedInput = (

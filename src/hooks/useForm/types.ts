@@ -6,7 +6,7 @@ export type FormField = {
   validations?: RegExp[] | ((value: string) => boolean)[];
 } & (
   | {
-      type: "text" | "number" | "email" | "checkbox";
+      type: "text" | "number" | "email";
     }
   | {
       type: "select";

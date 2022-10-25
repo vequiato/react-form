@@ -1,48 +1,49 @@
 import { useRef, useEffect } from "react";
 import styled from "styled-components";
-import { useAtomValue } from "jotai";
 
 import Form, { FormProps } from "../../components/Form";
 import Input, { InputProps, ReturnedInput } from "../../components/Input";
-import { formConfigAtom, FormConfig } from "../useConfig";
 import { ReturnKeyType, FormFields, FormField } from "./types";
-import { initialConfig } from "./initialConfigs";
+import { getFormConfig, FormConfig } from "../../helpers/config";
 
 export function useForm<T extends FormFields>(
   fields: T,
-  { styles: customStyles }: FormConfig = {}
+  { styles: customStyles, options: customOptions }: FormConfig = {}
 ) {
   const inputsRef = useRef<HTMLInputElement[]>([]);
   const fieldsKeys = Object.keys(fields);
-  const { styles: configStyles } =
-    useAtomValue(formConfigAtom) || initialConfig;
+  const { styles: configStyles, options } = getFormConfig();
+
+  const formOptions = { ...options, ...customOptions };
 
   useEffect(() => {
     inputsRef.current = inputsRef.current.slice(0, fieldsKeys.length);
   }, [fieldsKeys, inputsRef]);
 
-  const formFields = fieldsKeys.reduce((acc, curr, i) => {
-    const element = fields[curr];
+  const formFields = fieldsKeys.reduce((acc, fieldId, idx) => {
+    const { type, ...fieldProps } = fields[fieldId];
 
-    if (element.type === "text") {
+    if (type === "text" || type === "email" || type === "number") {
       return {
         ...acc,
-        [`${curr.charAt(0).toUpperCase()}${curr.slice(1)}`]: (
+        [`${fieldId.charAt(0).toUpperCase()}${fieldId.slice(1)}`]: (
           props: Omit<InputProps, keyof InputProps>
         ) => (
           <Input
             {...props}
-            id={curr}
-            key={curr}
-            label={element.label}
-            name={element.name}
-            defaultValue={element.value}
-            placeholder={element.placeholder}
-            validations={element.validations}
-            ref={(el: HTMLInputElement) => (inputsRef.current[i] = el)}
+            {...fieldProps}
+            id={fieldId}
+            key={fieldId}
+            type={type}
+            validateOnBlur={formOptions?.validateOnBlur}
+            ref={(el: HTMLInputElement) => (inputsRef.current[idx] = el)}
           />
         ),
       };
+    }
+
+    if (type === "select") {
+      throw new Error("Sorry, need to implementation :(");
     }
 
     return acc;
@@ -61,11 +62,10 @@ export function useForm<T extends FormFields>(
     Form: (props: Omit<FormProps, "inputsRef">) => (
       <StyledForm {...props} inputsRef={inputsRef}>
         {props.children}
-        <button>oi</button>
       </StyledForm>
     ),
   };
 }
 
-export type { ReturnKeyType, FormFields, FormField };
+export type { FormFields, FormField };
 export default useForm;

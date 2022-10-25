@@ -1,7 +1,7 @@
 {
   "name": "react-amazing-form",
   "description": "An awesome form for your React application",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "author": "João G. A. Vequiato <hello@vequiato.dev>",
   "license": "MIT",
   "bugs": {
@@ -37,11 +37,9 @@
   "peerDependencies": {
     "react": "^16.8.0 || 17.x",
     "react-dom": "^16.8.0 || 17.x",
-    "styled-components": "^5.0.0",
-    "jotai": "^1.8.6"
+    "styled-components": "^5.0.0"
   },
   "dependencies": {
-    "jotai": "^1.8.6",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "styled-components": "^5.3.6"

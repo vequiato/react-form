@@ -26,17 +26,22 @@ const validateInput = (
 };
 
 export const Input = React.forwardRef(
-  ({ id, label, validations, ...props }: InnerProps, ref) => {
-    const [isValid, setIsValid] = useState(() =>
-      validateInput((props.value as string) || "", validations)
-    );
+  ({ id, label, validations, validateOnBlur, ...props }: InnerProps, ref) => {
+    const [isValid, setIsValid] = useState<boolean>();
 
     const isValidInput = (event: React.FocusEvent<HTMLInputElement>) => {
-      const { value } = event.target;
+      if (validateOnBlur) {
+        const { value } = event.target;
 
-      setIsValid(validateInput(value, validations));
+        setIsValid(validateInput(value, validations));
+      }
+
       props.onBlur?.(event);
     };
+
+    const validationsString = validations?.map((validation) =>
+      validation.toString()
+    );
 
     return (
       <>
@@ -46,6 +51,7 @@ export const Input = React.forwardRef(
           {...props}
           id={id}
           data-valid={isValid}
+          data-validations={JSON.stringify(validationsString)}
           onBlur={isValidInput}
           ref={ref as React.LegacyRef<HTMLInputElement>}
         />
