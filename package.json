@@ -22,9 +22,11 @@
   },
   "scripts": {
     "lint": "eslint .",
+    "test": "yarn lint",
     "dev": "vite",
     "build": "yarn lint && tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -61,7 +63,8 @@
     "rollup-plugin-typescript2": "^0.34.1",
     "typescript": "*",
     "vite": "^3.1.0",
-    "vite-plugin-dts": "^1.6.6"
+    "vite-plugin-dts": "^1.6.6",
+    "husky": "^8.0.0"
   },
   "homepage": "https://github.com/vequiato/react-form#readme"
 }
