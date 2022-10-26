@@ -3,14 +3,14 @@ export type FormField = {
   placeholder?: string;
   label?: string;
   value?: string;
-  validations?: RegExp[] | ((value: string) => boolean)[];
+  validations?: RegExp[] | Array<(value: string) => boolean>;
 } & (
   | {
-      type: "text" | "number" | "email";
+      type: 'text' | 'number' | 'email';
     }
   | {
-      type: "select";
-      options: Record<string, any>[];
+      type: 'select';
+      options: Array<Record<string, any>>;
     }
 );
 

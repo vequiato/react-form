@@ -1,6 +1,6 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { UseAsyncState, AsyncState } from "./types";
+import { UseAsyncState, AsyncState } from './types';
 
 function useSafeDispatch<T>(dispatch: React.Dispatch<T>) {
   const mounted = React.useRef(false);
@@ -13,10 +13,7 @@ function useSafeDispatch<T>(dispatch: React.Dispatch<T>) {
     };
   }, []);
 
-  return React.useCallback(
-    (state: T) => (mounted.current ? dispatch(state) : void 0),
-    [dispatch]
-  );
+  return React.useCallback((state: T) => (mounted.current ? dispatch(state) : undefined), [dispatch]);
 }
 
 const defaultInitialState = {
@@ -30,56 +27,42 @@ export function useAsync<T>(initialState?: UseAsyncState<T>) {
     ...defaultInitialState,
     ...initialState,
   });
-  const [{ status, data: stateData, error: stateError }, setState] =
-    React.useReducer<(prevState: any, nextState: any) => UseAsyncState<T>>(
-      (prevState, nextState) => ({ ...prevState, ...nextState }),
-      initialStateRef.current
-    );
+  const [{ status, data: stateData, error: stateError }, setState] = React.useReducer<
+    (prevState: any, nextState: any) => UseAsyncState<T>
+  >((prevState, nextState) => ({ ...prevState, ...nextState }), initialStateRef.current);
 
   const safeSetState = useSafeDispatch<UseAsyncState<T>>(setState);
 
-  const setData = React.useCallback(
-    (data: T) => safeSetState({ data, status: "loaded" }),
-    [safeSetState]
-  );
-  const setError = React.useCallback(
-    (error: Error) => safeSetState({ error, status: "error" }),
-    [safeSetState]
-  );
-  const reset = React.useCallback(
-    () => safeSetState(initialStateRef.current),
-    [safeSetState]
-  );
+  const setData = React.useCallback((data: T) => safeSetState({ data, status: 'loaded' }), [safeSetState]);
+  const setError = React.useCallback((error: Error) => safeSetState({ error, status: 'error' }), [safeSetState]);
+  const reset = React.useCallback(() => safeSetState(initialStateRef.current), [safeSetState]);
 
   const run = React.useCallback(
-    (promise: Promise<T>): Promise<T> => {
-      if (!promise || !promise.then) {
-        throw new Error(
-          // eslint-disable-next-line max-len
-          `The argument passed to useAsync().run must be a promise.`
-        );
+    async (promise: Promise<T>): Promise<T> => {
+      if (promise === undefined || promise.then === undefined) {
+        throw new Error('The argument passed to useAsync().run must be a promise.');
       }
-      safeSetState({ status: "loading", data: undefined });
+      safeSetState({ status: 'loading', data: undefined });
 
-      return promise.then(
+      return await promise.then(
         (data: T) => {
           setData(data);
           return data;
         },
-        (error: Error) => {
+        async (error: Error) => {
           setError(error);
-          return Promise.reject(error);
-        }
+          return await Promise.reject(error);
+        },
       );
     },
-    [safeSetState, setData, setError]
+    [safeSetState, setData, setError],
   );
 
   return {
     isIdle: status === undefined,
-    isLoading: status === "loading",
-    isError: status === "error",
-    isSuccess: status === "loaded",
+    isLoading: status === 'loading',
+    isError: status === 'error',
+    isSuccess: status === 'loaded',
 
     setData,
     setError,

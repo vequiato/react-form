@@ -16,7 +16,7 @@ npm install react-amazing-form
 ## Usage
 
 ```jsx
-import { useForm } from "react-amazing-form";
+import { useForm } from 'react-amazing-form';
 
 function App() {
   const {
@@ -26,21 +26,21 @@ function App() {
   } = useForm(
     {
       email: {
-        name: "email",
-        placeholder: "",
-        label: "E-mail",
-        type: "email",
-        value: "",
+        name: 'email',
+        placeholder: '',
+        label: 'E-mail',
+        type: 'email',
+        value: '',
         validations: [
           /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
         ],
       },
       name: {
-        name: "name",
-        placeholder: "",
-        type: "text",
-        label: "Name",
-        value: "",
+        name: 'name',
+        placeholder: '',
+        type: 'text',
+        label: 'Name',
+        value: '',
         validations: [
           (value: string) => {
             return value.length >= 3;
@@ -48,7 +48,7 @@ function App() {
         ],
       },
     },
-    "https://myapi.com/post-data-url"
+    'https://myapi.com/post-data-url',
   );
 
   return (
@@ -58,9 +58,9 @@ function App() {
 
         <FormFields.Email />
 
-        {error && error.message}
+        {error?.message}
 
-        <button type="submit" disabled={status === "loading"}>
+        <button type="submit" disabled={status === 'loading'}>
           Send
         </button>
       </Form>
@@ -90,10 +90,10 @@ type fields = {
     validations?: RegExp[] | ((value: string) => boolean)[], // The validations of input
   } & (
     | {
-        type: "text" | "number" | "email", // Input type
+        type: 'text' | 'number' | 'email', // Input type
       }
     | {
-        type: "select", // Not implemented yet! :(
+        type: 'select', // Not implemented yet! :(
         options: Record<string, any>[], // The select options, no implemented yet
       }
   ),
@@ -106,7 +106,7 @@ type options = {
   options?: {
     baseUrl?: string, // Your API URL
     requestHeaders?: HeadersInit, // HTTP request headers
-    method?: "POST" | "PUT", // HTTP request method
+    method?: 'POST' | 'PUT', // HTTP request method
     validateOnBlur?: boolean, // If needs validate on field blur
   },
 };
@@ -127,7 +127,7 @@ Use `setFormConfig({ styles })` to define global styles for every `Form` in the 
 The `styles` param it's a `styled-components` css interpolation.
 
 ```jsx
-import { css } from "styled-components";
+import { css } from 'styled-components';
 
 const globalStyles = css`
   input {

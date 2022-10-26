@@ -1,14 +1,14 @@
 export type AsyncState<T = unknown, E extends Error = Error> =
   | (Partial<T> & {
-      status?: "loading" | undefined;
+      status?: 'loading' | undefined;
       error?: undefined;
     })
   | (Partial<T> & {
-      status: "error";
+      status: 'error';
       error: E;
     })
   | (T & {
-      status: "loaded";
+      status: 'loaded';
       error?: undefined;
     });
 

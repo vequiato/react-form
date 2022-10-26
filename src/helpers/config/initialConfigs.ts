@@ -1,11 +1,11 @@
-import { css } from "styled-components";
+import { css } from 'styled-components';
 
-import { FormConfig } from ".";
+import { FormConfig } from '.';
 
-const styles: FormConfig["styles"] = css`
+const styles: FormConfig['styles'] = css`
   display: flex;
   flex-direction: column;
-  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
 
   label {
     font-size: 14px;
@@ -20,7 +20,7 @@ const styles: FormConfig["styles"] = css`
     box-sizing: border-box;
     border: 1px solid #ccc;
 
-    &[data-valid="false"] {
+    &[data-valid='false'] {
       border-color: red;
     }
   }
@@ -33,9 +33,9 @@ const styles: FormConfig["styles"] = css`
   }
 `;
 
-const options: FormConfig["options"] = {
-  requestHeaders: { "content-type": "application/json" },
-  method: "POST",
+const options: FormConfig['options'] = {
+  requestHeaders: { 'content-type': 'application/json' },
+  method: 'POST',
   validateOnBlur: false,
 };
 

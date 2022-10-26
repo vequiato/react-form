@@ -1,19 +1,16 @@
-import { FormProps } from "./types";
+import { FormProps } from './types';
 
-const validateInput = (
-  input: HTMLInputElement,
-  inputsValidations: FormProps["inputsValidations"]
-) => {
+const validateInput = (input: HTMLInputElement, inputsValidations: FormProps['inputsValidations']) => {
   let isValid: boolean = false;
   const { value, id } = input;
 
   const validations = inputsValidations[id];
 
-  if (!validations || validations.length === 0) {
+  if (validations == null || validations.length === 0) {
     isValid = true;
   } else {
     validations.forEach((validation) => {
-      if (typeof validation === "function") {
+      if (typeof validation === 'function') {
         isValid = validation(value);
       } else {
         isValid = validation.test(value);
@@ -24,23 +21,13 @@ const validateInput = (
   input.dataset.valid = String(isValid);
 };
 
-const Form = ({
-  children,
-  inputsRef,
-  inputsValidations,
-  submitFormHandler: submitForm,
-  ...props
-}: FormProps) => {
+const Form = ({ children, inputsRef, inputsValidations, submitFormHandler: submitForm, ...props }: FormProps) => {
   const submitFormHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    inputsRef.current.forEach((input) =>
-      validateInput(input, inputsValidations)
-    );
+    inputsRef.current.forEach((input) => validateInput(input, inputsValidations));
 
-    const allFieldsAreValid = inputsRef.current.every(
-      (input) => input.dataset.valid === "true"
-    );
+    const allFieldsAreValid = inputsRef.current.every((input) => input.dataset.valid === 'true');
 
     if (!allFieldsAreValid) {
       return;
