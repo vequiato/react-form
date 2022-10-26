@@ -34,6 +34,8 @@ const styles: FormConfig["styles"] = css`
 `;
 
 const options: FormConfig["options"] = {
+  requestHeaders: { "content-type": "application/json" },
+  method: "POST",
   validateOnBlur: false,
 };
 

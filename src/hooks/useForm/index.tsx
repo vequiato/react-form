@@ -1,29 +1,41 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
 
+import useAsync from "../../hooks/useAsync";
 import Form, { FormProps } from "../../components/Form";
 import Input, { InputProps, ReturnedInput } from "../../components/Input";
 import { ReturnKeyType, FormFields, FormField } from "./types";
 import { getFormConfig, FormConfig } from "../../helpers/config";
+import fetcher from "../../helpers/fetcher";
 
 export function useForm<T extends FormFields>(
   fields: T,
+  path: string,
   { styles: customStyles, options: customOptions }: FormConfig = {}
 ) {
   const inputsRef = useRef<HTMLInputElement[]>([]);
-  const fieldsKeys = Object.keys(fields);
+  const { data, error, status, run } = useAsync();
   const { styles: configStyles, options } = getFormConfig();
+  const [formBody, setFormBody] = useState<Record<string, any>>();
 
-  const formOptions = { ...options, ...customOptions };
+  const fieldsKeys = Object.keys(fields);
 
   useEffect(() => {
     inputsRef.current = inputsRef.current.slice(0, fieldsKeys.length);
   }, [fieldsKeys, inputsRef]);
 
+  const formOptions = { ...options, ...customOptions };
+  let inputsValidations = {};
+
   const formFields = fieldsKeys.reduce((acc, fieldId, idx) => {
-    const { type, ...fieldProps } = fields[fieldId];
+    const { type, value, ...fieldProps } = fields[fieldId];
 
     if (type === "text" || type === "email" || type === "number") {
+      inputsValidations = {
+        ...inputsValidations,
+        [fieldId]: fieldProps.validations,
+      };
+
       return {
         ...acc,
         [`${fieldId.charAt(0).toUpperCase()}${fieldId.slice(1)}`]: (
@@ -32,6 +44,7 @@ export function useForm<T extends FormFields>(
           <Input
             {...props}
             {...fieldProps}
+            defaultValue={formBody?.[fieldId] || value}
             id={fieldId}
             key={fieldId}
             type={type}
@@ -54,16 +67,36 @@ export function useForm<T extends FormFields>(
     ${customStyles}
   `;
 
+  const submitFormHandler = (body: Record<string, any>) => {
+    setFormBody(body);
+    run(fetcher(path, body, formOptions));
+  };
+
   return {
     FormFields: formFields as Record<
       Capitalize<ReturnKeyType<keyof T>>,
       ReturnedInput
     >,
-    Form: (props: Omit<FormProps, "inputsRef">) => (
-      <StyledForm {...props} inputsRef={inputsRef}>
+    Form: (
+      props: Omit<
+        FormProps,
+        "inputsRef" | "inputsValidations" | "submitFormHandler" | "onSubmit"
+      >
+    ) => (
+      <StyledForm
+        {...props}
+        inputsRef={inputsRef}
+        inputsValidations={inputsValidations}
+        submitFormHandler={submitFormHandler}
+      >
         {props.children}
       </StyledForm>
     ),
+    data: {
+      error,
+      status,
+      response: data,
+    },
   };
 }
 

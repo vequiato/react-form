@@ -1,36 +1,48 @@
 import useForm from "./hooks/useForm";
 
-const test = (value: string) => {
-  return value.length >= 3;
-};
-
 function App() {
-  const { FormFields, Form } = useForm({
-    email: {
-      name: "email",
-      placeholder: "",
-      label: "E-mail",
-      type: "email",
-      value: "",
-      validations: [
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-      ],
+  const {
+    FormFields,
+    Form,
+    data: { status, error },
+  } = useForm(
+    {
+      email: {
+        name: "email",
+        placeholder: "",
+        label: "E-mail",
+        type: "email",
+        value: "",
+        validations: [
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+        ],
+      },
+      name: {
+        name: "name",
+        placeholder: "",
+        type: "text",
+        label: "Name",
+        value: "",
+        validations: [
+          (value: string) => {
+            return value.length >= 3;
+          },
+        ],
+      },
     },
-    name: {
-      name: "name",
-      placeholder: "",
-      type: "text",
-      label: "Name",
-      value: "",
-      validations: [test],
-    },
-  });
+    "https://myapi.com/post-data-url"
+  );
 
   return (
     <div className="App">
-      <Form onSubmit={() => console.log("tchau")}>
+      <Form>
         <FormFields.Name />
         <FormFields.Email />
+
+        {error && error.message}
+        <button type="submit" disabled={status === "loading"}>
+          Send
+        </button>
       </Form>
     </div>
   );

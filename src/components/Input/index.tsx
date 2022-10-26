@@ -39,10 +39,6 @@ export const Input = React.forwardRef(
       props.onBlur?.(event);
     };
 
-    const validationsString = validations?.map((validation) =>
-      validation.toString()
-    );
-
     return (
       <>
         {label && <label htmlFor={id}>{label}</label>}
@@ -51,7 +47,6 @@ export const Input = React.forwardRef(
           {...props}
           id={id}
           data-valid={isValid}
-          data-validations={JSON.stringify(validationsString)}
           onBlur={isValidInput}
           ref={ref as React.LegacyRef<HTMLInputElement>}
         />

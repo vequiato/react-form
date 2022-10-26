@@ -5,6 +5,9 @@ import { initialConfig } from "./initialConfigs";
 export type FormConfig = {
   styles?: FlattenSimpleInterpolation;
   options?: {
+    baseUrl?: string;
+    requestHeaders?: HeadersInit;
+    method?: "POST" | "PUT";
     validateOnBlur?: boolean;
   };
 };

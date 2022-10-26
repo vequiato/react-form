@@ -1,14 +1,13 @@
 import { FormProps } from "./types";
 
-import { InputComponentProps } from "../Input";
-
-const validateInput = (input: HTMLInputElement) => {
+const validateInput = (
+  input: HTMLInputElement,
+  inputsValidations: FormProps["inputsValidations"]
+) => {
   let isValid: boolean = false;
-  const { value } = input;
+  const { value, id } = input;
 
-  const validations: InputComponentProps["validations"] = JSON.parse(
-    input.dataset.validations || "[]"
-  ).map((validation: string) => eval(validation));
+  const validations = inputsValidations[id];
 
   if (!validations || validations.length === 0) {
     isValid = true;
@@ -25,11 +24,19 @@ const validateInput = (input: HTMLInputElement) => {
   input.dataset.valid = String(isValid);
 };
 
-const Form = ({ children, inputsRef, ...props }: FormProps) => {
+const Form = ({
+  children,
+  inputsRef,
+  inputsValidations,
+  submitFormHandler: submitForm,
+  ...props
+}: FormProps) => {
   const submitFormHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    inputsRef.current.forEach((input) => validateInput(input));
+    inputsRef.current.forEach((input) =>
+      validateInput(input, inputsValidations)
+    );
 
     const allFieldsAreValid = inputsRef.current.every(
       (input) => input.dataset.valid === "true"
@@ -47,12 +54,12 @@ const Form = ({ children, inputsRef, ...props }: FormProps) => {
       };
     }, {});
 
-    props.onSubmit?.(event);
+    submitForm(formValues as Record<string, any>);
   };
 
   return (
     <form {...props} onSubmit={submitFormHandler}>
-      {children} <button type="submit">enviar</button>
+      {children}
     </form>
   );
 };
