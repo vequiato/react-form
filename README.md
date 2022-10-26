@@ -69,49 +69,58 @@ function App() {
 }
 ```
 
-### useForm(fields, path, options?) usage
+In the example above, the request's `body` would be:
 
-```
-useForm(fields, path, options?)
-
-fields (required): {[fieldId: string]: {
-  name?: string;
-  placeholder?: string;
-  label?: string;
-  value?: string;
-  validations?: RegExp[] | ((value: string) => boolean)[];
-} & (
-  | {
-      type: "text" | "number" | "email";
-    }
-  | {
-      type: "select"; // Not implemented yet! :(
-      options: Record<string, any>[];
-    }
-)};
-
-path (required): string;
-
-options (optional): {
-  styles?: FlattenSimpleInterpolation; (A `styled-components` css interpolation. Ex: css`background:red;`)
-  options?: {
-    baseUrl?: string;
-    requestHeaders?: HeadersInit;
-    method?: "POST" | "PUT";
-    validateOnBlur?: boolean;
-  };
+```jsx
+{
+  'name': 'value',
+  'email': 'value'
 }
 ```
 
-### set `global` configs with setFormConfig({ styles, options }) helper function
+#### `useForm(fields, path, options?)` params
+
+```jsx
+type fields = {
+  [fieldId: string]: /* This key will be the input id */ {
+    name?: string, // The name of input
+    placeholder?: string, // The placeholder of input
+    label?: string, // The label of input
+    value?: string, // The initial value of input
+    validations?: RegExp[] | ((value: string) => boolean)[], // The validations of input
+  } & (
+    | {
+        type: "text" | "number" | "email", // Input type
+      }
+    | {
+        type: "select", // Not implemented yet! :(
+        options: Record<string, any>[], // The select options, no implemented yet
+      }
+  ),
+};
+
+type path = string;
+
+type options = {
+  styles?: FlattenSimpleInterpolation, // (A `styled-components` css interpolation. Ex: css`background:red;`)
+  options?: {
+    baseUrl?: string, // Your API URL
+    requestHeaders?: HeadersInit, // HTTP request headers
+    method?: "POST" | "PUT", // HTTP request method
+    validateOnBlur?: boolean, // If needs validate on field blur
+  },
+};
+```
+
+#### Set `global` configs with `setFormConfig({ styles, options })` helper function
 
 If you want to set default configurations for every `Form` in the application, like a CSS styles for your inputs, you can use `setFormConfig({ styles, options})`.
 
-The `options` param is the same of the hook `useForm(fields, path, options?)`;
+The `options` param is the same of the hook `useForm(fields, path, options?)`.
 
 All default configurations can be replaced on every single `Form`, when you set new `options` on `useForm(fields, path, options?)` call.
 
-### set `styles` for form
+#### Set `styles` for form
 
 Use `setFormConfig({ styles })` to define global styles for every `Form` in the application, or set custom styles for every single `Form` setting the `options` param on `useForm(fields, path, options?)`;
 
@@ -130,7 +139,7 @@ const globalStyles = css`
 setFormConfig({ styles: globalStyles });
 ```
 
-### How does the form request works?
+## How does the form request works?
 
 Just the browser `fetch` native API.
 
