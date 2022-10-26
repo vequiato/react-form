@@ -16,7 +16,7 @@ npm install react-amazing-form
 ## Usage
 
 ```jsx
-import useForm from "./hooks/useForm";
+import { useForm } from "react-amazing-form";
 
 function App() {
   const {
