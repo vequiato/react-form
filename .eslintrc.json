@@ -11,7 +11,7 @@
     "project": ["./tsconfig.json"]
   },
   "plugins": ["react"],
-  "ignorePatterns": ["*.d.ts", "dist", "vite.config.ts", "jest-setup.ts", "babel.config.cjs"],
+  "ignorePatterns": ["*.d.ts", "dist", "vite.config.ts", "jest-setup.ts", "babel.config.cjs", "jest.config.cjs"],
   "rules": {
     "@typescript-eslint/semi": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
