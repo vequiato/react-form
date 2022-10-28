@@ -1,7 +1,7 @@
 {
   "name": "react-amazing-form",
   "description": "An awesome form for your React application",
-  "version": "2.3.0",
+  "version": "3.0.1",
   "author": "João G. A. Vequiato <hello@vequiato.dev>",
   "license": "MIT",
   "bugs": {

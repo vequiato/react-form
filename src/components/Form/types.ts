@@ -19,11 +19,20 @@ export interface FormChildrenProps {
   };
 }
 
-export type FormProps = Omit<React.FormHTMLAttributes<HTMLFormElement>, 'children' | 'onSubmit'> & {
-  children: JSX.Element | ((promiseState: FormChildrenProps) => JSX.Element);
-  onSubmit?: (formValues: Record<string, any>) => void;
-  validateOnBlur?: boolean;
-  path: string;
-} & {
-  [key in keyof FormConfig]?: FormConfig[key];
-};
+export type FormProps =
+  | (Omit<React.FormHTMLAttributes<HTMLFormElement>, 'children' | 'onSubmit'> & {
+      children: (promiseState: FormChildrenProps) => JSX.Element;
+      onSubmit?: undefined;
+      validateOnBlur?: boolean;
+      path: string;
+    } & {
+      [key in keyof FormConfig]?: FormConfig[key];
+    })
+  | ({
+      children: JSX.Element;
+      onSubmit: (formValues: Record<string, any>) => void;
+      validateOnBlur?: boolean;
+      path: string;
+    } & {
+      [key in keyof FormConfig]?: FormConfig[key];
+    });

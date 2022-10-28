@@ -21,7 +21,7 @@ export const Form = ({ children, onSubmit, validateOnBlur, path, options, ...pro
       .map((field) => field.input.id);
 
     if (invalidFields.length > 0) {
-      setInvalidFields(invalidFields);
+      onSubmit === undefined && setInvalidFields(invalidFields);
 
       return;
     }
