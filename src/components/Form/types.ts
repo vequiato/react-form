@@ -9,13 +9,15 @@ export type FormInputRefs = React.MutableRefObject<
 >;
 
 export interface FormChildrenProps {
-  data: any;
-  status: AsyncState['status'];
-  error: AsyncState['error'];
+  promiseState: {
+    response: any;
+    status: AsyncState['status'];
+    error: AsyncState['error'];
+  };
 }
 
 export type FormProps = Omit<React.FormHTMLAttributes<HTMLFormElement>, 'children'> & {
-  children: ({ data, status, error }: FormChildrenProps) => JSX.Element;
+  children: (promiseState: FormChildrenProps) => JSX.Element;
   validateOnBlur?: boolean;
   path: string;
 } & {

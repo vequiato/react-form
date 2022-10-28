@@ -7,7 +7,7 @@ function App() {
   return (
     <div className="App">
       <Form path="/post-path">
-        {({ error, status }) => (
+        {({ promiseState }) => (
           <>
             <label htmlFor="name">Name</label>
             <Input id="name" validations={[/\w/]} />
@@ -15,9 +15,9 @@ function App() {
             <label htmlFor="email">Email</label>
             <Input id="email" validations={[/\w/]} />
 
-            {error?.message}
+            {promiseState.error?.message}
 
-            <button type="submit" disabled={status === 'loading'}>
+            <button type="submit" disabled={promiseState.status === 'loading'}>
               Send
             </button>
           </>
