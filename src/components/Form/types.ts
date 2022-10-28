@@ -17,7 +17,7 @@ export interface FormChildrenProps {
 }
 
 export type FormProps = Omit<React.FormHTMLAttributes<HTMLFormElement>, 'children'> & {
-  children: (promiseState: FormChildrenProps) => JSX.Element;
+  children: JSX.Element | ((promiseState: FormChildrenProps) => JSX.Element);
   validateOnBlur?: boolean;
   path: string;
 } & {

@@ -26,10 +26,16 @@ function App() {
 
   return (
     <div className="App">
+      {/*By default the fields are validated when the form is submitted, 
+      but you can change it to validate onBlur by setting validateOnBlur 
+      as a property of the form*/}
       <Form path="/post-path">
         {({ promiseState }) => (
           <>
             <label htmlFor="name">Name</label>
+            {/* When one field is invalid (didn't pass in validation) 
+            it will stay with data-valid="false", so you can use this 
+            to style the invalid field */}
             <Input id="name" validations={[/\w/]} />
 
             <label htmlFor="email">Email</label>

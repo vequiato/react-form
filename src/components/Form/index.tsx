@@ -35,7 +35,7 @@ export const Form = ({ children, validateOnBlur, path, options, ...props }: Form
   return (
     <form {...props} onSubmit={submitFormHandler}>
       <FormContext.Provider value={{ formInputsRefs, validateOnBlur }}>
-        {children({ promiseState: { response: data, status, error } })}
+        {typeof children === 'function' ? children({ promiseState: { response: data, status, error } }) : children}
       </FormContext.Provider>
     </form>
   );
