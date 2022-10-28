@@ -14,6 +14,9 @@ export interface FormChildrenProps {
     status: AsyncState['status'];
     error: AsyncState['error'];
   };
+  formState?: {
+    invalidFields: string[];
+  };
 }
 
 export type FormProps = Omit<React.FormHTMLAttributes<HTMLFormElement>, 'children' | 'onSubmit'> & {

@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 import { validateInput } from '../Input/helpers';
 import { FormContext } from '../../hooks/useForm';
@@ -9,15 +9,20 @@ import { FormProps, FormInputRefs } from './types';
 export const Form = ({ children, onSubmit, validateOnBlur, path, options, ...props }: FormProps) => {
   const formInputsRefs: FormInputRefs = useRef([]);
   const { data, error, status, run } = useAsync();
+  const [invalidFields, setInvalidFields] = useState<string[]>([]);
 
   const submitFormHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     formInputsRefs.current.forEach(({ input, validations }) => validateInput(input, validations));
 
-    const allFieldsAreValid = formInputsRefs.current.every(({ input }) => input.dataset.valid === 'true');
+    const invalidFields = formInputsRefs.current
+      .filter(({ input }) => input.dataset.valid === 'false')
+      .map((field) => field.input.id);
 
-    if (!allFieldsAreValid) {
+    if (invalidFields.length > 0) {
+      setInvalidFields(invalidFields);
+
       return;
     }
 
@@ -40,7 +45,9 @@ export const Form = ({ children, onSubmit, validateOnBlur, path, options, ...pro
   return (
     <form {...props} onSubmit={submitFormHandler}>
       <FormContext.Provider value={{ formInputsRefs, validateOnBlur }}>
-        {typeof children === 'function' ? children({ promiseState: { response: data, status, error } }) : children}
+        {typeof children === 'function'
+          ? children({ formState: { invalidFields }, promiseState: { response: data, status, error } })
+          : children}
       </FormContext.Provider>
     </form>
   );
