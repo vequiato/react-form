@@ -1,49 +1,27 @@
-import useForm from './hooks/useForm';
+import { Input, Form } from './components';
+import { setGlobalConfig } from './config';
 
 function App() {
-  const {
-    FormFields,
-    Form,
-    data: { status, error },
-  } = useForm(
-    {
-      email: {
-        name: 'email',
-        placeholder: '',
-        label: 'E-mail',
-        type: 'email',
-        value: '',
-        validations: [
-          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-        ],
-      },
-      name: {
-        name: 'name',
-        placeholder: '',
-        type: 'text',
-        label: 'Name',
-        value: '',
-        validations: [
-          (value: string) => {
-            return value.length >= 3;
-          },
-        ],
-      },
-    },
-    'https://myapi.com/post-data-url',
-  );
+  setGlobalConfig({ options: { baseUrl: 'https://myapi.com' } });
 
   return (
     <div className="App">
-      <Form>
-        <FormFields.Name />
-        <FormFields.Email />
+      <Form path="/post-path">
+        {({ error, status }) => (
+          <>
+            <label htmlFor="name">Name</label>
+            <Input id="name" validations={[/\w/]} />
 
-        {error?.message}
+            <label htmlFor="email">Email</label>
+            <Input id="email" validations={[/\w/]} />
 
-        <button type="submit" disabled={status === 'loading'}>
-          Send
-        </button>
+            {error?.message}
+
+            <button type="submit" disabled={status === 'loading'}>
+              Send
+            </button>
+          </>
+        )}
       </Form>
     </div>
   );

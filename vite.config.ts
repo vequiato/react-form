@@ -17,12 +17,11 @@ export default defineConfig({
       fileName: 'react-amazing-form',
     },
     rollupOptions: {
-      external: ['react', 'react-dom', 'styled-components'],
+      external: ['react', 'react-dom'],
       output: {
         globals: {
           react: 'React',
           'react-dom': 'ReactDOM',
-          'styled-components': 'styled',
         },
       },
     },

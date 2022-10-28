@@ -1,6 +1,9 @@
-import { FormConfig } from '../../helpers/config';
+import { getGlobalConfig } from '../../config';
 
-const fetcher = async (path: string, body: Record<string, any>, formOptions: NonNullable<FormConfig['options']>) => {
+const fetcher = async (path: string, body: Record<string, any>, options = {}) => {
+  const { options: globalOptions } = getGlobalConfig();
+  const formOptions = { ...globalOptions, ...options };
+
   const headers = formOptions.requestHeaders as { [k: string]: string };
   const headerValues = Object.keys(headers as {}).map((header) => headers[header]);
 

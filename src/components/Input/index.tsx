@@ -1,54 +1,29 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
-import { InputProps, InputComponentProps, ReturnedInput } from './types';
+import useFormContext from '../../hooks/useForm';
+import { validateInput } from './helpers';
+import { InputProps } from './types';
 
-type InnerProps = InputProps & InputComponentProps;
-
-const validateInput = (value: string, validations: InnerProps['validations']) => {
-  let isValid: boolean = false;
-
-  if (validations == null || validations.length === 0) {
-    isValid = true;
-  } else {
-    validations.forEach((validation) => {
-      if (typeof validation === 'function') {
-        isValid = validation(value);
-      } else {
-        isValid = validation.test(value);
-      }
-    });
-  }
-
-  return isValid;
-};
-
-export const Input = React.forwardRef(({ id, label, validations, validateOnBlur, ...props }: InnerProps, ref) => {
-  const [isValid, setIsValid] = useState<boolean>();
+export const Input = ({ validations = [], ...props }: InputProps) => {
+  const { formInputsRefs, validateOnBlur } = useFormContext();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const isValidInput = (event: React.FocusEvent<HTMLInputElement>) => {
-    if (validateOnBlur !== undefined) {
-      const { value } = event.target;
-
-      setIsValid(validateInput(value, validations));
+    if (validateOnBlur !== undefined && inputRef.current !== null) {
+      validateInput(inputRef.current, validations);
     }
 
     props.onBlur?.(event);
   };
 
-  return (
-    <>
-      {label !== undefined && <label htmlFor={id}>{label}</label>}
+  useEffect(() => {
+    if (inputRef.current !== null) {
+      formInputsRefs.current[formInputsRefs.current.length] = { input: inputRef.current, validations };
+    }
+  }, [formInputsRefs, validations]);
 
-      <input
-        {...props}
-        id={id}
-        data-valid={isValid}
-        onBlur={isValidInput}
-        ref={ref as React.LegacyRef<HTMLInputElement>}
-      />
-    </>
-  );
-});
+  return <input {...props} onBlur={isValidInput} ref={inputRef} />;
+};
 
-export type { InputProps, InputComponentProps, ReturnedInput };
+export type { InputProps };
 export default Input;

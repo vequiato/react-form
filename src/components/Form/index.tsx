@@ -1,52 +1,42 @@
-import { FormProps } from './types';
+import { useRef } from 'react';
 
-const validateInput = (input: HTMLInputElement, inputsValidations: FormProps['inputsValidations']) => {
-  let isValid: boolean = false;
-  const { value, id } = input;
+import { validateInput } from '../Input/helpers';
+import { FormContext } from '../../hooks/useForm';
+import useAsync from '../../hooks/useAsync';
+import fetcher from './fetcher';
+import { FormProps, FormInputRefs } from './types';
 
-  const validations = inputsValidations[id];
+export const Form = ({ children, validateOnBlur, path, options, ...props }: FormProps) => {
+  const formInputsRefs: FormInputRefs = useRef([]);
+  const { data, error, status, run } = useAsync();
 
-  if (validations == null || validations.length === 0) {
-    isValid = true;
-  } else {
-    validations.forEach((validation) => {
-      if (typeof validation === 'function') {
-        isValid = validation(value);
-      } else {
-        isValid = validation.test(value);
-      }
-    });
-  }
-
-  input.dataset.valid = String(isValid);
-};
-
-const Form = ({ children, inputsRef, inputsValidations, submitFormHandler: submitForm, ...props }: FormProps) => {
   const submitFormHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    inputsRef.current.forEach((input) => validateInput(input, inputsValidations));
+    formInputsRefs.current.forEach(({ input, validations }) => validateInput(input, validations));
 
-    const allFieldsAreValid = inputsRef.current.every((input) => input.dataset.valid === 'true');
+    const allFieldsAreValid = formInputsRefs.current.every(({ input }) => input.dataset.valid === 'true');
 
     if (!allFieldsAreValid) {
       return;
     }
 
-    const formValues = inputsRef.current.reduce((acc, curr) => {
-      const { id, value } = curr;
+    const formValues = formInputsRefs.current.reduce((previousInputs, currentInput) => {
+      const { id, value } = currentInput.input;
       return {
-        ...acc,
+        ...previousInputs,
         [id]: value,
       };
     }, {});
 
-    submitForm(formValues as Record<string, any>);
+    void run(fetcher(path, formValues, options));
   };
 
   return (
     <form {...props} onSubmit={submitFormHandler}>
-      {children}
+      <FormContext.Provider value={{ formInputsRefs, validateOnBlur }}>
+        {children({ data, status, error })}
+      </FormContext.Provider>
     </form>
   );
 };
