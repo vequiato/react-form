@@ -19,8 +19,8 @@ npm install react-amazing-form
 import { Form, Input, setGlobalConfig } from 'react-amazing-form';
 
 function App() {
-  // The global configs will be used in all applications <Form/>
-  // but you can change in every different <From/>
+  // The global configs will be used in all application's <Form/>
+  // but you can change in every different <Form/>
   // passing the options param to it
   setGlobalConfig({ options: { baseUrl: 'https://myapi.com' } });
 
