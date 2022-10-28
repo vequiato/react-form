@@ -6,7 +6,7 @@ import useAsync from '../../hooks/useAsync';
 import fetcher from './fetcher';
 import { FormProps, FormInputRefs } from './types';
 
-export const Form = ({ children, validateOnBlur, path, options, ...props }: FormProps) => {
+export const Form = ({ children, onSubmit, validateOnBlur, path, options, ...props }: FormProps) => {
   const formInputsRefs: FormInputRefs = useRef([]);
   const { data, error, status, run } = useAsync();
 
@@ -28,6 +28,11 @@ export const Form = ({ children, validateOnBlur, path, options, ...props }: Form
         [id]: value,
       };
     }, {});
+
+    if (onSubmit !== undefined) {
+      onSubmit(formValues);
+      return;
+    }
 
     void run(fetcher(path, formValues, options));
   };

@@ -2,6 +2,7 @@
 
 An awesome `Form` with stateless `Inputs` for your React application.
 We don't need to rerender on every single letter inputed!
+So yes, the `onChange` of `Inputs` is disabled in the lib, because you don't need it :)
 
 ## Installation
 
@@ -63,9 +64,17 @@ In the example above, the request's `body` would be:
 }
 ```
 
-## How does the form request works?
+## How does the form submit works?
 
-Just the browser `fetch` native API.
+By default, the lib uses the native `fetch` API, but you can use `onSubmit` itself as a property on the `<Form/>`.
+
+`onSubmit` The function will receive as arguments the form fields with values (if all fields pass validation).
+
+## And about the `<Form/>'s` styles?
+
+In the future I will implement a UI lib with native styles, I promise.
+
+For now, you can use your favorite styles lib and style the `<Form/>` and `<Input/>` components with it.
 
 ## That's it for now
 

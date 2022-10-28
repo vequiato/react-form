@@ -16,8 +16,9 @@ export interface FormChildrenProps {
   };
 }
 
-export type FormProps = Omit<React.FormHTMLAttributes<HTMLFormElement>, 'children'> & {
+export type FormProps = Omit<React.FormHTMLAttributes<HTMLFormElement>, 'children' | 'onSubmit'> & {
   children: JSX.Element | ((promiseState: FormChildrenProps) => JSX.Element);
+  onSubmit?: (formValues: Record<string, any>) => void;
   validateOnBlur?: boolean;
   path: string;
 } & {

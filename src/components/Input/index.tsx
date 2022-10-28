@@ -4,7 +4,7 @@ import useFormContext from '../../hooks/useForm';
 import { validateInput } from './helpers';
 import { InputProps } from './types';
 
-export const Input = ({ validations = [], ...props }: InputProps) => {
+const Input = ({ validations = [], value, onChange: _, ...props }: InputProps) => {
   const { formInputsRefs, validateOnBlur } = useFormContext();
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -22,8 +22,10 @@ export const Input = ({ validations = [], ...props }: InputProps) => {
     }
   }, [formInputsRefs, validations]);
 
-  return <input {...props} onBlur={isValidInput} ref={inputRef} />;
+  return <input {...props} defaultValue={value} onBlur={isValidInput} ref={inputRef} />;
 };
 
+const TypedInput = Input as ({ validations, value, ...props }: Omit<InputProps, 'onChange'>) => JSX.Element;
+
 export type { InputProps };
-export default Input;
+export { TypedInput as Input };
